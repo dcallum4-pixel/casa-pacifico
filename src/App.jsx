@@ -136,36 +136,36 @@ const LOCAL_GUIDE = [
     icon: '🏖',
     category: 'Beaches',
     items: [
-      { name: 'Olas Altas Beach', time: '7 min walk' },
+      { name: 'Olas Altas Beach', time: '7 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d8663587-Reviews-Olas_Altas_Beach-Mazatlan_Pacific_Coast.html' },
       { name: 'Playa Norte', time: '12 min walk' },
-      { name: 'Playa Gaviotas (Zona Dorada)', time: '15 min drive' },
+      { name: 'Playa Gaviotas (Zona Dorada)', time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
     ],
   },
   {
     icon: '🍽',
     category: 'Dining & Nightlife',
     items: [
-      { name: 'Plaza Machado restaurants', time: '10 min walk' },
+      { name: 'Plaza Machado restaurants', time: '10 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d1065283-Reviews-Plaza_Machado-Mazatlan_Pacific_Coast.html' },
       { name: 'El Presidio restaurant', time: '8 min walk' },
-      { name: 'Zona Dorada dining strip', time: '15 min drive' },
+      { name: 'Zona Dorada dining strip', time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
     ],
   },
   {
     icon: '🎭',
     category: 'Culture & Attractions',
     items: [
-      { name: 'Malecón waterfront promenade', time: '1 min walk' },
-      { name: 'Angela Peralta Theater', time: '12 min walk' },
-      { name: 'Mazatlán Cathedral', time: '15 min walk' },
-      { name: 'El Clavadista cliff divers', time: '5 min walk' },
+      { name: 'Malecón waterfront promenade', time: '1 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d278625-Reviews-Malecon_de_Mazatlan-Mazatlan_Pacific_Coast.html' },
+      { name: 'Angela Peralta Theater', time: '12 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d558218-Reviews-Angela_Peralta_Theater-Mazatlan_Pacific_Coast.html' },
+      { name: 'Mazatlán Cathedral', time: '15 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319355-Reviews-Mazatlan_Cathedral-Mazatlan_Pacific_Coast.html' },
+      { name: 'El Clavadista cliff divers', time: '5 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319370-Reviews-El_Clavadista-Mazatlan_Pacific_Coast.html' },
     ],
   },
   {
     icon: '🛍',
     category: 'Shopping & Essentials',
     items: [
-      { name: 'Mercado Pino Suárez', time: '10 min walk' },
-      { name: 'Zona Dorada shopping', time: '15 min drive' },
+      { name: 'Mercado Pino Suárez', time: '10 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d2356589-Reviews-Mercado_Pino_Suarez-Mazatlan_Pacific_Coast.html' },
+      { name: 'Zona Dorada shopping', time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
       { name: 'Local convenience stores', time: '2 min walk' },
     ],
   },
@@ -173,8 +173,8 @@ const LOCAL_GUIDE = [
     icon: '✈️',
     category: 'Getting Here',
     items: [
-      { name: 'General Rafael Buelna Airport', time: '30 min drive' },
-      { name: 'Mazatlán ferry terminal', time: '20 min drive' },
+      { name: 'General Rafael Buelna Airport', time: '30 min drive', link: 'https://www.google.com/maps/place/Mazatl%C3%A1n+International+Airport/@23.1614,-106.2661,15z' },
+      { name: 'Mazatlán ferry terminal', time: '20 min drive', link: 'https://www.google.com/maps/place/Terminal+de+Ferry+Mazatl%C3%A1n/@23.1833,-106.4244,15z' },
     ],
   },
 ]
@@ -518,19 +518,44 @@ function Location() {
           <ul className="space-y-4 mb-6">
             <li className="flex items-start gap-3 text-gray-700">
               <span className="text-xl">🚶</span>
-              <span><strong className="text-ocean">1 minute</strong> — Malecón waterfront promenade</span>
+              <span>
+                <strong className="text-ocean">1 minute</strong> —{' '}
+                <a href="https://www.tripadvisor.com/Attraction_Review-g150792-d278625-Reviews-Malecon_de_Mazatlan-Mazatlan_Pacific_Coast.html" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
+                  Malecón waterfront promenade
+                  <span className="text-gold ml-0.5 text-xs">↗</span>
+                </a>
+              </span>
             </li>
             <li className="flex items-start gap-3 text-gray-700">
               <span className="text-xl">🏖️</span>
-              <span><strong className="text-ocean">7 minutes</strong> — Olas Altas Beach</span>
+              <span>
+                <strong className="text-ocean">7 minutes</strong> —{' '}
+                <a href="https://www.tripadvisor.com/Attraction_Review-g150792-d8663587-Reviews-Olas_Altas_Beach-Mazatlan_Pacific_Coast.html" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
+                  Olas Altas Beach
+                  <span className="text-gold ml-0.5 text-xs">↗</span>
+                </a>
+              </span>
             </li>
             <li className="flex items-start gap-3 text-gray-700">
               <span className="text-xl">🍽️</span>
-              <span><strong className="text-ocean">10 minutes</strong> — Plaza Machado dining &amp; nightlife</span>
+              <span>
+                <strong className="text-ocean">10 minutes</strong> —{' '}
+                <a href="https://www.tripadvisor.com/Attraction_Review-g150792-d1065283-Reviews-Plaza_Machado-Mazatlan_Pacific_Coast.html" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
+                  Plaza Machado
+                  <span className="text-gold ml-0.5 text-xs">↗</span>
+                </a>
+                {' '}dining &amp; nightlife
+              </span>
             </li>
             <li className="flex items-start gap-3 text-gray-700">
               <span className="text-xl">✈️</span>
-              <span><strong className="text-ocean">30 minutes</strong> — General Rafael Buelna Airport</span>
+              <span>
+                <strong className="text-ocean">30 minutes</strong> —{' '}
+                <a href="https://www.google.com/maps/place/Mazatl%C3%A1n+International+Airport/@23.1614,-106.2661,15z" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
+                  General Rafael Buelna Airport
+                  <span className="text-gold ml-0.5 text-xs">↗</span>
+                </a>
+              </span>
             </li>
           </ul>
           <p className="text-gray-600 leading-relaxed">
@@ -800,7 +825,19 @@ function LocalAreaGuide() {
                 <ul className="space-y-1">
                   {cat.items.map((item) => (
                     <li key={item.name} className="flex justify-between items-center py-2 border-b border-gray-200 last:border-0">
-                      <span className="text-gray-700 text-sm">{item.name}</span>
+                      <span className="text-gray-700 text-sm">
+                        {item.link ? (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:text-gold transition-colors"
+                          >
+                            {item.name}
+                            <span className="text-gold ml-0.5 text-xs">↗</span>
+                          </a>
+                        ) : item.name}
+                      </span>
                       <span className="text-ocean text-xs font-semibold bg-ocean/10 px-3 py-1 rounded-full ml-4 whitespace-nowrap">
                         {item.time}
                       </span>
