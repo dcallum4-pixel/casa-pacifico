@@ -1,4 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import Navbar from './components/Navbar.jsx'
+import Footer from './components/Footer.jsx'
+import { posts } from './data/posts.js'
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -213,87 +217,7 @@ function SectionLabel({ children }) {
   )
 }
 
-// ─── Navbar ───────────────────────────────────────────────────────────────────
-
-function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const handler = () => setScrolled(window.scrollY > 10)
-    window.addEventListener('scroll', handler)
-    return () => window.removeEventListener('scroll', handler)
-  }, [])
-
-  const links = [
-    { label: 'About',        id: 'about' },
-    { label: 'Bedrooms',     id: 'bedrooms' },
-    { label: 'Amenities',    id: 'amenities' },
-    { label: 'Gallery',      id: 'gallery' },
-    { label: 'Reviews',      id: 'reviews' },
-    { label: 'Location',     id: 'location' },
-    { label: 'FAQ',          id: 'faq' },
-  ]
-
-  return (
-    <nav className={`sticky top-0 z-50 bg-white transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''}`}>
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-left">
-          <div className="font-serif text-ocean text-xl font-semibold">Casa Pacífico</div>
-          <div className="text-xs tracking-widest text-gray-500 uppercase">Mazatlán</div>
-        </button>
-
-        <div className="hidden md:flex items-center gap-5">
-          {links.map(l => (
-            <button
-              key={l.id}
-              onClick={() => scrollTo(l.id)}
-              className="text-gray-600 hover:text-ocean text-sm font-medium transition-colors"
-            >
-              {l.label}
-            </button>
-          ))}
-          <button
-            onClick={() => scrollTo('availability')}
-            className="bg-gold text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-[#c49a3c] transition-colors"
-          >
-            Check Availability
-          </button>
-        </div>
-
-        <button
-          className="md:hidden flex flex-col gap-1.5 p-2"
-          onClick={() => setMenuOpen(o => !o)}
-          aria-label="Toggle menu"
-        >
-          <span className={`block w-6 h-0.5 bg-gray-700 transition-transform duration-200 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-          <span className={`block w-6 h-0.5 bg-gray-700 transition-opacity duration-200 ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`block w-6 h-0.5 bg-gray-700 transition-transform duration-200 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-        </button>
-      </div>
-
-      {menuOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 px-4 pb-4">
-          {links.map(l => (
-            <button
-              key={l.id}
-              onClick={() => { scrollTo(l.id); setMenuOpen(false) }}
-              className="block w-full text-left py-3 text-gray-700 hover:text-ocean font-medium border-b border-gray-50 text-sm"
-            >
-              {l.label}
-            </button>
-          ))}
-          <button
-            onClick={() => { scrollTo('availability'); setMenuOpen(false) }}
-            className="mt-3 w-full bg-gold text-white py-3 rounded-lg font-semibold text-sm hover:bg-[#c49a3c] transition-colors"
-          >
-            Check Availability
-          </button>
-        </div>
-      )}
-    </nav>
-  )
-}
+// ─── (Navbar imported from ./components/Navbar.jsx) ──────────────────────────
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
@@ -1231,75 +1155,99 @@ function Newsletter() {
   )
 }
 
-// ─── Footer ───────────────────────────────────────────────────────────────────
+// ─── (Footer imported from ./components/Footer.jsx) ──────────────────────────
 
-function Footer() {
+// ─── Events Teaser ────────────────────────────────────────────────────────────
+
+function EventsTeaser() {
   return (
-    <footer className="bg-ocean text-white py-12">
+    <section className="bg-ocean py-14 px-4">
+      <div className="max-w-3xl mx-auto text-center">
+        <div className="text-4xl mb-4">🎉</div>
+        <h2 className="font-serif text-2xl md:text-3xl text-white font-semibold mb-3">
+          What's happening in Mazatlán?
+        </h2>
+        <p className="text-white/70 mb-8 max-w-xl mx-auto">
+          Browse our events calendar — plan your trip around Mazatlán's best festivals, markets, and cultural celebrations.
+        </p>
+        <Link
+          to="/events"
+          className="inline-block bg-gold text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#c49a3c] transition-colors"
+        >
+          View Events Calendar
+        </Link>
+      </div>
+    </section>
+  )
+}
+
+// ─── Blog Preview ─────────────────────────────────────────────────────────────
+
+const CATEGORY_COLORS = {
+  'Travel Tips':        'bg-blue-50 text-blue-700',
+  'Food & Dining':      'bg-orange-50 text-orange-700',
+  'Events & Festivals': 'bg-purple-50 text-purple-700',
+  'Family Travel':      'bg-green-50 text-green-700',
+  'Booking Tips':       'bg-gold/10 text-yellow-800',
+}
+
+function BlogPreview() {
+  const featured = posts.slice(0, 3)
+
+  return (
+    <section className="py-20 bg-warm-white">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
-          <div>
-            <div className="font-serif text-xl text-gold">Casa Pacífico</div>
-            <div className="text-white/60 text-sm mt-1">Mazatlán, Sinaloa, Mexico</div>
-            <div className="text-white/40 text-xs mt-2">Where the Pacific Meets Home</div>
-          </div>
-
-          <div>
-            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">Quick Links</div>
-            <ul className="space-y-2">
-              {[
-                { label: 'About',        id: 'about' },
-                { label: 'Gallery',      id: 'gallery' },
-                { label: 'Amenities',    id: 'amenities' },
-                { label: 'Reviews',      id: 'reviews' },
-                { label: 'FAQ',          id: 'faq' },
-                { label: 'Contact',      id: 'contact' },
-              ].map(l => (
-                <li key={l.id}>
-                  <button
-                    onClick={() => scrollTo(l.id)}
-                    className="text-white/70 hover:text-gold text-sm transition-colors"
-                  >
-                    {l.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">Also find us on</div>
-            <ul className="space-y-2">
-              <li>
-                <a
-                  href="https://www.airbnb.com/rooms/983307579255396282"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 hover:text-gold text-sm transition-colors"
-                >
-                  Airbnb
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://www.vrbo.com/en-ca/cottage-rental/p3460030vb"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/70 hover:text-gold text-sm transition-colors"
-                >
-                  VRBO
-                </a>
-              </li>
-            </ul>
-          </div>
+        <div className="text-center mb-12">
+          <SectionLabel>Mazatlán Travel Guide</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">Your Mazatlán Travel Guide</h2>
+          <p className="text-gray-500 mt-3 max-w-xl mx-auto">
+            Tips, guides, and local knowledge from your hosts at Casa Pacífico
+          </p>
         </div>
 
-        <div className="border-t border-white/10 mt-8 pt-8 text-center text-white/40 text-xs">
-          © 2025 Casa Pacífico Mazatlán. All rights reserved. | Site by{' '}
-          <a href="#" className="text-white/60 hover:text-gold transition-colors">Local Boost AI</a>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+          {featured.map(post => (
+            <article
+              key={post.slug}
+              className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col"
+            >
+              <div className="p-7 flex flex-col flex-1">
+                <div className="flex items-center justify-between mb-4">
+                  <span className={`text-xs font-semibold px-3 py-1 rounded-full ${CATEGORY_COLORS[post.category] || 'bg-gray-100 text-gray-600'}`}>
+                    {post.category}
+                  </span>
+                  <span className="text-gray-400 text-xs">{post.readTime} read</span>
+                </div>
+                <h3 className="font-serif text-xl text-ocean font-semibold leading-snug mb-3">
+                  {post.title}
+                </h3>
+                <p className="text-gray-500 text-sm leading-relaxed flex-1 mb-5 line-clamp-2">
+                  {post.excerpt}
+                </p>
+                <Link
+                  to={`/blog/${post.slug}`}
+                  className="mt-auto text-ocean font-semibold text-sm hover:text-gold transition-colors flex items-center gap-1"
+                >
+                  Read Article
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className="text-center">
+          <Link
+            to="/blog"
+            className="inline-block border-2 border-ocean text-ocean px-8 py-3 rounded-lg font-semibold hover:bg-ocean hover:text-white transition-colors"
+          >
+            View All Articles
+          </Link>
         </div>
       </div>
-    </footer>
+    </section>
   )
 }
 
@@ -1401,6 +1349,8 @@ export default function App() {
       <FadeIn><LocalAreaGuide /></FadeIn>
       <FadeIn><DigitalHouseGuide /></FadeIn>
       <FadeIn><FAQ /></FadeIn>
+      <FadeIn><EventsTeaser /></FadeIn>
+      <FadeIn><BlogPreview /></FadeIn>
       <FadeIn><InquiryForm /></FadeIn>
       <FadeIn><Newsletter /></FadeIn>
       <Footer />
