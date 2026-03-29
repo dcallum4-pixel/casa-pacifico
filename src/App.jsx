@@ -3,36 +3,20 @@ import { Link } from 'react-router-dom'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import { posts } from './data/posts.js'
+import { useT } from './context/LanguageContext.jsx'
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Data (non-translatable: images, icons, links, times) ─────────────────────
 
-const BEDROOMS = [
-  { id: 1, name: 'Bedroom 1', bed: 'Queen Bed', note: '', img: 'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/569a9dd7-9987-4e35-82df-e19a33952d8a.jpeg' },
-  { id: 2, name: 'Bedroom 2', bed: 'King Bed', note: '', img: 'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/9b1707e8-639c-44d1-9b24-7bef97879979.jpeg' },
-  { id: 3, name: 'Bedroom 3', bed: 'Queen Bed', note: '', img: 'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/ff04e503-6d81-40fd-a297-85aecbbe0e39.jpeg' },
-  { id: 4, name: 'Bedroom 4', bed: 'King Bed + Sofa Bed', note: '', img: 'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/49f407e1-88e2-462c-b6bf-45bec44b284c.jpeg' },
-  { id: 5, name: 'Bedroom 5', bed: 'King Bed', note: 'Primary Suite — Ensuite Bath', img: 'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/ea245889-3828-441f-9202-e9188f7ab2b8.jpeg' },
-  { id: 6, name: 'Bedroom 6', bed: 'King Bed', note: 'Primary Suite — Ensuite Bath', img: 'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/e128b781-8782-46fa-ba43-3361bfa463fa.jpeg' },
+const BEDROOM_IMAGES = [
+  'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/569a9dd7-9987-4e35-82df-e19a33952d8a.jpeg',
+  'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/9b1707e8-639c-44d1-9b24-7bef97879979.jpeg',
+  'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/ff04e503-6d81-40fd-a297-85aecbbe0e39.jpeg',
+  'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/49f407e1-88e2-462c-b6bf-45bec44b284c.jpeg',
+  'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/ea245889-3828-441f-9202-e9188f7ab2b8.jpeg',
+  'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/e128b781-8782-46fa-ba43-3361bfa463fa.jpeg',
 ]
 
-const AMENITIES = [
-  { icon: '🏊', label: 'Private Pool' },
-  { icon: '🌊', label: 'Ocean Views' },
-  { icon: '🍳', label: 'Full Kitchen' },
-  { icon: '🍽️', label: 'Dining for 8+' },
-  { icon: '🍹', label: 'Bar Area' },
-  { icon: '🌿', label: 'Garden & Terrace' },
-  { icon: '🏖️', label: 'Beach Access (7 min)' },
-  { icon: '🧹', label: 'Housekeeping Mon–Fri' },
-  { icon: '❄️', label: 'Air Conditioning' },
-  { icon: '📶', label: 'High-Speed WiFi' },
-  { icon: '🧺', label: 'Washer & Dryer' },
-  { icon: '🚗', label: 'Parking Available' },
-  { icon: '🏠', label: '4,000 Sq Ft' },
-  { icon: '🛁', label: '4.5 Bathrooms' },
-  { icon: '🛋️', label: 'Spacious Living Room' },
-  { icon: '📍', label: '1 Min to Malecón' },
-]
+const AMENITY_ICONS = ['🏊','🌊','🍳','🍽️','🍹','🌿','🏖️','🧹','❄️','📶','🧺','🚗','🏠','🛁','🛋️','📍']
 
 const GALLERY = [
   'https://a0.muscache.com/im/pictures/miso/Hosting-983307579255396282/original/4087f40b-4824-490b-804a-008e9b8b304c.jpeg',
@@ -88,93 +72,55 @@ const REVIEWS = [
   },
 ]
 
-const FAQS = [
-  {
-    q: 'What is the maximum occupancy?',
-    a: 'Casa Pacífico comfortably sleeps 14 guests across 6 bedrooms. We have 4 king beds, 2 queen beds, a pull-out sofa, and 2 air mattresses. The property is well suited for large families or multi-family groups.',
-  },
-  {
-    q: 'Is the pool private?',
-    a: 'Yes, the pool is entirely private to your group. It is not shared with any other guests or neighbors.',
-  },
-  {
-    q: 'What does daily housekeeping include?',
-    a: 'Monday through Friday, our housekeeping team visits to tidy common areas, refresh linens, empty bins, and ensure the property is spotless. It is included in your stay at no extra charge.',
-  },
-  {
-    q: 'How close is the beach?',
-    a: 'Olas Altas Beach is approximately a 7 minute walk from the front door. The Malecón waterfront promenade is literally 1 minute away and has beach access points along its length.',
-  },
-  {
-    q: 'Is there parking available?',
-    a: 'Yes, parking is available at the property for your group\'s vehicles.',
-  },
-  {
-    q: 'What is the check-in and check-out time?',
-    a: 'Check-in is from 4:00 PM. Check-out is by 11:00 AM. Early check-in or late check-out may be available upon request — just ask us when you inquire.',
-  },
-  {
-    q: 'Can we book direct instead of through Airbnb or VRBO?',
-    a: 'Absolutely — and we encourage it. Booking direct saves you the platform service fees (which can be 14-16% on top of the nightly rate) and allows us to offer repeat guests a 10% loyalty discount. Use the inquiry form on this page to get started.',
-  },
-  {
-    q: 'Is the property suitable for children?',
-    a: 'Yes, families with children are very welcome. The property has a pool, spacious garden areas, and plenty of room for kids to play safely. Please note the pool does not have a safety fence, so adult supervision is required at all times.',
-  },
-  {
-    q: 'What airports serve Mazatlán?',
-    a: 'General Rafael Buelna International Airport (MZT) is approximately 30 minutes by car from Casa Pacífico. Several US and Canadian cities have direct flights.',
-  },
-  {
-    q: 'How do I book or check availability?',
-    a: 'Use the inquiry form on this page or click the Check Availability button. Rodrigo responds within a few hours and will confirm dates, pricing, and next steps for direct booking.',
-  },
+// Location section: static links/times; labels come from translations
+const LOCATION_LINKS = [
+  'https://www.tripadvisor.com/Attraction_Review-g150792-d278625-Reviews-Malecon_de_Mazatlan-Mazatlan_Pacific_Coast.html',
+  'https://www.tripadvisor.com/Attraction_Review-g150792-d8663587-Reviews-Olas_Altas_Beach-Mazatlan_Pacific_Coast.html',
+  'https://www.tripadvisor.com/Attraction_Review-g150792-d1065283-Reviews-Plaza_Machado-Mazatlan_Pacific_Coast.html',
+  'https://www.google.com/maps/place/Mazatl%C3%A1n+International+Airport/@23.1614,-106.2661,15z',
 ]
+const LOCATION_ICONS = ['🚶', '🏖️', '🍽️', '✈️']
 
-const LOCAL_GUIDE = [
+// Local guide: icons, times, links (labels come from translations)
+const LOCAL_GUIDE_META = [
   {
     icon: '🏖',
-    category: 'Beaches',
     items: [
-      { name: 'Olas Altas Beach', time: '7 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d8663587-Reviews-Olas_Altas_Beach-Mazatlan_Pacific_Coast.html' },
-      { name: 'Playa Norte', time: '12 min walk' },
-      { name: 'Playa Gaviotas (Zona Dorada)', time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
+      { time: '7 min walk',  link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d8663587-Reviews-Olas_Altas_Beach-Mazatlan_Pacific_Coast.html' },
+      { time: '12 min walk', link: null },
+      { time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
     ],
   },
   {
     icon: '🍽',
-    category: 'Dining & Nightlife',
     items: [
-      { name: 'Plaza Machado restaurants', time: '10 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d1065283-Reviews-Plaza_Machado-Mazatlan_Pacific_Coast.html' },
-      { name: 'El Presidio restaurant', time: '8 min walk' },
-      { name: 'Zona Dorada dining strip', time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
+      { time: '10 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d1065283-Reviews-Plaza_Machado-Mazatlan_Pacific_Coast.html' },
+      { time: '8 min walk',  link: null },
+      { time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
     ],
   },
   {
     icon: '🎭',
-    category: 'Culture & Attractions',
     items: [
-      { name: 'Malecón waterfront promenade', time: '1 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d278625-Reviews-Malecon_de_Mazatlan-Mazatlan_Pacific_Coast.html' },
-      { name: 'Angela Peralta Theater', time: '12 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d558218-Reviews-Angela_Peralta_Theater-Mazatlan_Pacific_Coast.html' },
-      { name: 'Mazatlán Cathedral', time: '15 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319355-Reviews-Mazatlan_Cathedral-Mazatlan_Pacific_Coast.html' },
-      { name: 'El Clavadista cliff divers', time: '5 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319370-Reviews-El_Clavadista-Mazatlan_Pacific_Coast.html' },
+      { time: '1 min walk',  link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d278625-Reviews-Malecon_de_Mazatlan-Mazatlan_Pacific_Coast.html' },
+      { time: '12 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d558218-Reviews-Angela_Peralta_Theater-Mazatlan_Pacific_Coast.html' },
+      { time: '15 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319355-Reviews-Mazatlan_Cathedral-Mazatlan_Pacific_Coast.html' },
+      { time: '5 min walk',  link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319370-Reviews-El_Clavadista-Mazatlan_Pacific_Coast.html' },
     ],
   },
   {
     icon: '🛍',
-    category: 'Shopping & Essentials',
     items: [
-      { name: 'Mercado Pino Suárez', time: '10 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d2356589-Reviews-Mercado_Pino_Suarez-Mazatlan_Pacific_Coast.html' },
-      { name: 'Zona Dorada shopping', time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
-      { name: 'Local convenience stores', time: '2 min walk' },
+      { time: '10 min walk', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d2356589-Reviews-Mercado_Pino_Suarez-Mazatlan_Pacific_Coast.html' },
+      { time: '15 min drive', link: 'https://www.tripadvisor.com/Attraction_Review-g150792-d319368-Reviews-Zona_Dorada-Mazatlan_Pacific_Coast.html' },
+      { time: '2 min walk',  link: null },
     ],
   },
   {
     icon: '✈️',
-    category: 'Getting Here',
     items: [
-      { name: 'General Rafael Buelna Airport', time: '30 min drive', link: 'https://www.google.com/maps/place/Mazatl%C3%A1n+International+Airport/@23.1614,-106.2661,15z' },
-      { name: 'Mazatlán ferry terminal', time: '20 min drive', link: 'https://www.google.com/maps/place/Terminal+de+Ferry+Mazatl%C3%A1n/@23.1833,-106.4244,15z' },
+      { time: '30 min drive', link: 'https://www.google.com/maps/place/Mazatl%C3%A1n+International+Airport/@23.1614,-106.2661,15z' },
+      { time: '20 min drive', link: 'https://www.google.com/maps/place/Terminal+de+Ferry+Mazatl%C3%A1n/@23.1833,-106.4244,15z' },
     ],
   },
 ]
@@ -188,7 +134,6 @@ function scrollTo(id) {
   if (el) el.scrollIntoView({ behavior: 'smooth' })
 }
 
-// Fade-in-up on scroll into view
 function FadeIn({ children }) {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
@@ -210,7 +155,6 @@ function FadeIn({ children }) {
   )
 }
 
-// Section label pill
 function SectionLabel({ children }) {
   return (
     <p className="text-gold tracking-widest text-sm font-semibold uppercase mb-3">{children}</p>
@@ -222,6 +166,7 @@ function SectionLabel({ children }) {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
 function Hero() {
+  const t = useT().hero
   return (
     <section className="min-h-screen relative">
       <div
@@ -235,23 +180,23 @@ function Hero() {
           Casa Pacífico Mazatlán
         </h1>
         <p className="italic font-serif text-gold text-xl md:text-2xl mt-2 text-shadow">
-          Where the Pacific Meets Home
+          {t.subtitle}
         </p>
         <p className="text-white/80 text-lg mt-4 text-shadow max-w-2xl">
-          Oceanfront Villa for 14 · Private Pool · Malecón Views · Daily Housekeeping
+          {t.desc}
         </p>
         <div className="flex flex-wrap gap-4 justify-center mt-8">
           <button
             onClick={() => scrollTo('availability')}
             className="bg-gold text-white px-8 py-3 rounded-lg font-semibold text-base hover:bg-[#c49a3c] transition-colors"
           >
-            Check Availability
+            {t.cta}
           </button>
           <button
             onClick={() => scrollTo('gallery')}
             className="border border-white text-white px-8 py-3 rounded-lg font-semibold text-base hover:bg-white/10 transition-colors"
           >
-            View Gallery
+            {t.gallery}
           </button>
         </div>
       </div>
@@ -270,18 +215,12 @@ function Hero() {
 // ─── HighlightsBar ────────────────────────────────────────────────────────────
 
 function HighlightsBar() {
-  const stats = [
-    { icon: '🏠', value: '4,000 Sq Ft', label: 'Living Space' },
-    { icon: '🛏️', value: '6 Bedrooms', label: 'All Configured' },
-    { icon: '👥', value: 'Sleeps 14', label: 'Guests' },
-    { icon: '🏊', value: 'Private Pool', label: 'Exclusive Use' },
-    { icon: '🧹', value: 'Daily Housekeeping', label: 'Mon–Fri' },
-  ]
+  const t = useT().highlights
   return (
     <section id="highlights" className="bg-ocean text-white py-6">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-wrap justify-center divide-x divide-white/20">
-          {stats.map((s, i) => (
+          {t.items.map((s, i) => (
             <div key={i} className="flex-1 min-w-[140px] text-center px-4 py-2">
               <div className="text-2xl mb-1">{s.icon}</div>
               <div className="text-gold font-bold text-xl leading-tight">{s.value}</div>
@@ -297,29 +236,24 @@ function HighlightsBar() {
 // ─── About ────────────────────────────────────────────────────────────────────
 
 function About() {
+  const t = useT().about
   return (
     <section id="about" className="py-20 px-4">
       <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-2 gap-16 items-center">
         <div>
-          <SectionLabel>The Property</SectionLabel>
+          <SectionLabel>{t.label}</SectionLabel>
           <h2 className="font-serif text-4xl text-ocean leading-snug mb-6">
-            Your Pacific Home Base in Mazatlán
+            {t.heading}
           </h2>
-          <p className="text-gray-600 leading-relaxed mb-4">
-            Casa Pacífico is Mazatlán's premier large-group villa — a fully renovated 4,000 square foot residence sitting one minute from the iconic Malecón waterfront promenade. With six bedrooms, four and a half baths, a private pool, and sweeping Pacific Ocean views from the balcony, terrace, and garden, this is the kind of property that turns a vacation into a family tradition.
-          </p>
-          <p className="text-gray-600 leading-relaxed mb-4">
-            The home comfortably sleeps 14 across four king bedrooms, two queen bedrooms, a pull-out sofa, and two air mattresses — with two primary suites each featuring their own ensuite bathroom for added privacy. A fully equipped kitchen, dining table for eight, kitchen island seating for three, and a dedicated bar area make it easy to host everyone under one roof.
-          </p>
-          <p className="text-gray-600 leading-relaxed mb-8">
-            Included Monday through Friday housekeeping means the only thing on your agenda is enjoying the Pacific. Olas Altas Beach is a seven-minute walk. Plaza Machado, Mazatlán's best dining and nightlife square, is ten minutes on foot.
-          </p>
+          <p className="text-gray-600 leading-relaxed mb-4">{t.p1}</p>
+          <p className="text-gray-600 leading-relaxed mb-4">{t.p2}</p>
+          <p className="text-gray-600 leading-relaxed mb-8">{t.p3}</p>
           <div className="flex flex-wrap gap-3">
             <span className="bg-ocean/10 text-ocean border border-ocean/20 rounded-full px-4 py-1 text-sm font-medium">
-              Rated 4.92★ on Airbnb
+              {t.badge1}
             </span>
             <span className="bg-ocean/10 text-ocean border border-ocean/20 rounded-full px-4 py-1 text-sm font-medium">
-              10/10 on VRBO
+              {t.badge2}
             </span>
           </div>
         </div>
@@ -340,24 +274,28 @@ function About() {
 // ─── Bedrooms ─────────────────────────────────────────────────────────────────
 
 function Bedrooms() {
+  const t = useT().bedrooms
   return (
     <section id="bedrooms" className="py-20 bg-warm-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>Accommodations</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">Sleep in Comfort — All 6 Bedrooms</h2>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {BEDROOMS.map(room => (
-            <div key={room.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-              <img src={room.img} alt={room.name} loading="lazy" className="h-52 w-full object-cover" />
-              <div className="p-5">
-                <h3 className="font-serif text-xl text-ocean font-semibold">{room.name}</h3>
-                <p className="text-gray-600 text-sm mt-1">{room.bed}</p>
-                {room.note && <p className="text-gold text-xs font-semibold uppercase tracking-wide mt-2">{room.note}</p>}
+          {BEDROOM_IMAGES.map((img, i) => {
+            const room = t.rooms[i]
+            return (
+              <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <img src={img} alt={room.name} loading="lazy" className="h-52 w-full object-cover" />
+                <div className="p-5">
+                  <h3 className="font-serif text-xl text-ocean font-semibold">{room.name}</h3>
+                  <p className="text-gray-600 text-sm mt-1">{room.bed}</p>
+                  {room.note && <p className="text-gold text-xs font-semibold uppercase tracking-wide mt-2">{room.note}</p>}
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
@@ -367,18 +305,19 @@ function Bedrooms() {
 // ─── Amenities ────────────────────────────────────────────────────────────────
 
 function Amenities() {
+  const t = useT().amenities
   return (
     <section id="amenities" className="py-20 bg-[#f0ede6]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>What's Included</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">Everything You Need, Nothing You Don't</h2>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {AMENITIES.map((a, i) => (
+          {AMENITY_ICONS.map((icon, i) => (
             <div key={i} className="bg-white rounded-xl p-5 flex items-start gap-3 shadow-sm">
-              <span className="text-2xl flex-shrink-0">{a.icon}</span>
-              <span className="text-gray-700 text-sm font-medium leading-snug">{a.label}</span>
+              <span className="text-2xl flex-shrink-0">{icon}</span>
+              <span className="text-gray-700 text-sm font-medium leading-snug">{t.items[i]}</span>
             </div>
           ))}
         </div>
@@ -390,6 +329,7 @@ function Amenities() {
 // ─── Gallery ──────────────────────────────────────────────────────────────────
 
 function Gallery() {
+  const t = useT().gallery
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [imgKey, setImgKey] = useState(0)
@@ -416,7 +356,7 @@ function Gallery() {
   }, [lightboxOpen])
 
   const cellClass = (index) => {
-    if (index === 0)            return 'col-span-2 row-span-2'
+    if (index === 0)                return 'col-span-2 row-span-2'
     if (index === 4 || index === 8) return 'col-span-2'
     return ''
   }
@@ -425,8 +365,8 @@ function Gallery() {
     <section id="gallery" className="py-20 bg-warm-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>Gallery</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">Casa Pacífico in Photos</h2>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -438,7 +378,7 @@ function Gallery() {
             >
               <img
                 src={src}
-                alt={`Casa Pacífico photo ${i + 1}`}
+                alt={`${t.photoAlt} ${i + 1}`}
                 loading="lazy"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -452,47 +392,42 @@ function Gallery() {
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center"
           onClick={closeLightbox}
         >
-          {/* Image with fade-in on change */}
           <img
             key={imgKey}
             src={GALLERY[currentIndex]}
-            alt={`Gallery photo ${currentIndex + 1}`}
+            alt={`${t.photoAlt} ${currentIndex + 1}`}
             className="max-h-[90vh] max-w-[90vw] object-contain animate-fade-in"
             onClick={e => e.stopPropagation()}
           />
 
-          {/* Counter */}
           <div className="fixed top-4 left-1/2 -translate-x-1/2 text-white/70 text-sm bg-black/40 px-3 py-1 rounded-full">
             {currentIndex + 1} / {GALLERY.length}
           </div>
 
-          {/* Close */}
           <button
             className="fixed top-4 right-4 bg-white/20 hover:bg-white/40 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors"
             onClick={closeLightbox}
-            aria-label="Close lightbox"
+            aria-label="Close"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
-          {/* Prev */}
           <button
             className="absolute left-4 bg-white/20 hover:bg-white/40 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors"
             onClick={e => { e.stopPropagation(); prev() }}
-            aria-label="Previous photo"
+            aria-label={t.prev}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
-          {/* Next */}
           <button
             className="absolute right-4 bg-white/20 hover:bg-white/40 text-white rounded-full w-10 h-10 flex items-center justify-center transition-colors"
             onClick={e => { e.stopPropagation(); next() }}
-            aria-label="Next photo"
+            aria-label={t.next}
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -507,60 +442,35 @@ function Gallery() {
 // ─── Location ─────────────────────────────────────────────────────────────────
 
 function Location() {
+  const t = useT().location
   return (
     <section id="location" className="py-20 bg-warm-white">
       <div className="max-w-7xl mx-auto px-4 lg:grid lg:grid-cols-2 gap-12 items-center">
         <div className="mb-12 lg:mb-0">
-          <SectionLabel>Location</SectionLabel>
+          <SectionLabel>{t.label}</SectionLabel>
           <h2 className="font-serif text-4xl text-ocean leading-snug mb-6">
-            Steps from Everything Mazatlán
+            {t.heading}
           </h2>
           <ul className="space-y-4 mb-6">
-            <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">🚶</span>
-              <span>
-                <strong className="text-ocean">1 minute</strong> —{' '}
-                <a href="https://www.tripadvisor.com/Attraction_Review-g150792-d278625-Reviews-Malecon_de_Mazatlan-Mazatlan_Pacific_Coast.html" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
-                  Malecón waterfront promenade
-                  <span className="text-gold ml-0.5 text-xs">↗</span>
-                </a>
-              </span>
-            </li>
-            <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">🏖️</span>
-              <span>
-                <strong className="text-ocean">7 minutes</strong> —{' '}
-                <a href="https://www.tripadvisor.com/Attraction_Review-g150792-d8663587-Reviews-Olas_Altas_Beach-Mazatlan_Pacific_Coast.html" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
-                  Olas Altas Beach
-                  <span className="text-gold ml-0.5 text-xs">↗</span>
-                </a>
-              </span>
-            </li>
-            <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">🍽️</span>
-              <span>
-                <strong className="text-ocean">10 minutes</strong> —{' '}
-                <a href="https://www.tripadvisor.com/Attraction_Review-g150792-d1065283-Reviews-Plaza_Machado-Mazatlan_Pacific_Coast.html" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
-                  Plaza Machado
-                  <span className="text-gold ml-0.5 text-xs">↗</span>
-                </a>
-                {' '}dining &amp; nightlife
-              </span>
-            </li>
-            <li className="flex items-start gap-3 text-gray-700">
-              <span className="text-xl">✈️</span>
-              <span>
-                <strong className="text-ocean">30 minutes</strong> —{' '}
-                <a href="https://www.google.com/maps/place/Mazatl%C3%A1n+International+Airport/@23.1614,-106.2661,15z" target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
-                  General Rafael Buelna Airport
-                  <span className="text-gold ml-0.5 text-xs">↗</span>
-                </a>
-              </span>
-            </li>
+            {t.distances.map((d, i) => (
+              <li key={i} className="flex items-start gap-3 text-gray-700">
+                <span className="text-xl">{LOCATION_ICONS[i]}</span>
+                <span>
+                  <strong className="text-ocean">{d.time}</strong> —{' '}
+                  <a
+                    href={LOCATION_LINKS[i]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gold transition-colors"
+                  >
+                    {d.place}
+                    <span className="text-gold ml-0.5 text-xs">↗</span>
+                  </a>
+                </span>
+              </li>
+            ))}
           </ul>
-          <p className="text-gray-600 leading-relaxed">
-            Casa Pacífico sits in the heart of Mazatlán's historic coastline, putting the city's best beaches, restaurants, and cultural landmarks within easy walking distance.
-          </p>
+          <p className="text-gray-600 leading-relaxed">{t.desc}</p>
         </div>
 
         <div className="rounded-2xl overflow-hidden shadow-xl">
@@ -583,22 +493,21 @@ function Location() {
 // ─── Availability ─────────────────────────────────────────────────────────────
 
 function Availability() {
+  const t = useT().availability
   return (
     <section id="availability" className="py-20 bg-ocean text-white">
       <div className="max-w-4xl mx-auto px-4 text-center">
         <h2 className="font-serif text-4xl text-white leading-snug">
-          Check Availability &amp; Book Direct
+          {t.heading}
         </h2>
         <p className="text-white/70 mt-4 text-lg max-w-2xl mx-auto">
-          Booking direct saves you up to 15% compared to platform fees. Same property, better price.
+          {t.desc}
         </p>
 
         <div className="mt-10 border border-white/20 rounded-2xl p-12 text-center bg-white/5">
           <div className="text-5xl">📅</div>
-          <h3 className="text-white text-xl font-semibold mt-4">Live availability calendar coming soon</h3>
-          <p className="text-white/60 mt-2">
-            Contact us below to check your dates — we typically respond within a few hours.
-          </p>
+          <h3 className="text-white text-xl font-semibold mt-4">{t.calendarTitle}</h3>
+          <p className="text-white/60 mt-2">{t.calendarDesc}</p>
         </div>
 
         <div className="mt-10 flex flex-wrap gap-4 justify-center">
@@ -606,7 +515,7 @@ function Availability() {
             onClick={() => scrollTo('contact')}
             className="bg-gold text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#c49a3c] transition-colors"
           >
-            Inquire About Dates
+            {t.inquire}
           </button>
           <a
             href="https://www.airbnb.com/rooms/983307579255396282"
@@ -614,7 +523,7 @@ function Availability() {
             rel="noopener noreferrer"
             className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
           >
-            View on Airbnb
+            {t.airbnb}
           </a>
           <a
             href="https://www.vrbo.com/en-ca/cottage-rental/p3460030vb"
@@ -622,11 +531,11 @@ function Availability() {
             rel="noopener noreferrer"
             className="border border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors"
           >
-            View on VRBO
+            {t.vrbo}
           </a>
         </div>
 
-        <p className="text-white/50 text-sm mt-6">★ 4.92 on Airbnb · 10/10 on VRBO · Superhost</p>
+        <p className="text-white/50 text-sm mt-6">{t.stats}</p>
       </div>
     </section>
   )
@@ -635,54 +544,38 @@ function Availability() {
 // ─── Why Book Direct ──────────────────────────────────────────────────────────
 
 function WhyBookDirect() {
-  const platform = [
-    'Airbnb / VRBO service fees: up to 14%',
-    'Guest service fees: up to 16%',
-    'Limited direct communication',
-    'No repeat guest discounts',
-    'Total extra cost on $3,000 stay: ~$450+',
-  ]
-  const direct = [
-    'Zero platform fees',
-    'Direct communication with host',
-    'Repeat guest discount: 10% off',
-    'Flexible payment options',
-    'Total savings on $3,000 stay: ~$450+',
-  ]
-
+  const t = useT().whyBookDirect
   return (
     <section id="book-direct" className="py-20 bg-ocean">
       <div className="max-w-5xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>Save More</SectionLabel>
-          <h2 className="font-serif text-4xl text-white">Why Book Direct with Us?</h2>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-white">{t.heading}</h2>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-12">
-          {/* Platform card */}
           <div className="bg-white/10 border border-white/20 rounded-2xl p-8">
-            <div className="text-white/50 text-xs uppercase tracking-widest font-semibold mb-5">Booking via Platform</div>
+            <div className="text-white/50 text-xs uppercase tracking-widest font-semibold mb-5">{t.platformLabel}</div>
             <ul className="space-y-4">
-              {platform.map((item, i) => (
+              {t.platform.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="text-red-400 mt-0.5 flex-shrink-0">✗</span>
-                  <span className={`text-sm ${i === platform.length - 1 ? 'text-white font-semibold' : 'text-white/60'}`}>{item}</span>
+                  <span className={`text-sm ${i === t.platform.length - 1 ? 'text-white font-semibold' : 'text-white/60'}`}>{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Book direct card */}
           <div className="bg-gold/15 border-2 border-gold rounded-2xl p-8 relative">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gold text-white text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full">
-              Recommended
+              {t.recommended}
             </div>
-            <div className="text-gold text-xs uppercase tracking-widest font-semibold mb-5">Book Direct</div>
+            <div className="text-gold text-xs uppercase tracking-widest font-semibold mb-5">{t.directLabel}</div>
             <ul className="space-y-4">
-              {direct.map((item, i) => (
+              {t.direct.map((item, i) => (
                 <li key={i} className="flex items-start gap-3">
                   <span className="text-gold mt-0.5 flex-shrink-0">✓</span>
-                  <span className={`text-sm ${i === direct.length - 1 ? 'text-white font-semibold' : 'text-white/80'}`}>{item}</span>
+                  <span className={`text-sm ${i === t.direct.length - 1 ? 'text-white font-semibold' : 'text-white/80'}`}>{item}</span>
                 </li>
               ))}
             </ul>
@@ -691,13 +584,13 @@ function WhyBookDirect() {
 
         <div className="text-center">
           <p className="font-serif text-2xl md:text-3xl text-white mb-8">
-            Same villa. Same dates. <span className="text-gold">Better price.</span>
+            {t.tagline} <span className="text-gold">{t.taglineAccent}</span>
           </p>
           <button
             onClick={() => scrollTo('contact')}
             className="bg-gold text-white px-10 py-4 rounded-xl font-semibold text-lg hover:bg-[#c49a3c] transition-colors"
           >
-            Inquire Now &amp; Save
+            {t.cta}
           </button>
         </div>
       </div>
@@ -708,6 +601,7 @@ function WhyBookDirect() {
 // ─── Reviews ──────────────────────────────────────────────────────────────────
 
 function Reviews() {
+  const t = useT().reviews
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
 
@@ -725,9 +619,9 @@ function Reviews() {
     <section id="reviews" className="py-20 bg-warm-white">
       <div className="max-w-3xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>Guest Reviews</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">What Our Guests Say</h2>
-          <p className="text-gray-500 mt-3">4.92★ on Airbnb · 10/10 on VRBO · 25+ verified stays</p>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
+          <p className="text-gray-500 mt-3">{t.stats}</p>
         </div>
 
         <div
@@ -735,12 +629,10 @@ function Reviews() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          {/* Review card — key forces remount + animation on change */}
           <div
             key={current}
             className="bg-white rounded-2xl shadow-lg p-8 md:p-10 animate-fade-in-up"
           >
-            {/* Stars */}
             <div className="flex gap-1 mb-5">
               {[...Array(5)].map((_, i) => (
                 <span key={i} className="text-gold text-xl">★</span>
@@ -762,11 +654,10 @@ function Reviews() {
             </div>
           </div>
 
-          {/* Arrows */}
           <button
             onClick={prev}
             className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 bg-ocean text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-ocean/80 transition-colors"
-            aria-label="Previous review"
+            aria-label={t.prev}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
@@ -775,7 +666,7 @@ function Reviews() {
           <button
             onClick={next}
             className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 bg-ocean text-white rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-ocean/80 transition-colors"
-            aria-label="Next review"
+            aria-label={t.next}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
@@ -783,7 +674,6 @@ function Reviews() {
           </button>
         </div>
 
-        {/* Dot indicators */}
         <div className="flex justify-center gap-2 mt-8">
           {REVIEWS.map((_, i) => (
             <button
@@ -802,53 +692,53 @@ function Reviews() {
 // ─── Local Area Guide ─────────────────────────────────────────────────────────
 
 function LocalAreaGuide() {
+  const t = useT().localGuide
   return (
     <section id="area-guide" className="py-20 bg-[#f0ede6]">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>Explore</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">Explore Mazatlán — Everything at Your Doorstep</h2>
-          <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-            Casa Pacífico puts the best of Mazatlán within easy walking distance
-          </p>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
+          <p className="text-gray-500 mt-3 max-w-xl mx-auto">{t.subtitle}</p>
         </div>
 
         <div className="lg:grid lg:grid-cols-2 gap-12 items-start">
-          {/* Categories list */}
           <div className="space-y-8 mb-12 lg:mb-0">
-            {LOCAL_GUIDE.map((cat) => (
-              <div key={cat.category}>
-                <h3 className="font-serif text-lg text-ocean font-semibold mb-3 flex items-center gap-2">
-                  <span>{cat.icon}</span>
-                  <span>{cat.category}</span>
-                </h3>
-                <ul className="space-y-1">
-                  {cat.items.map((item) => (
-                    <li key={item.name} className="flex justify-between items-center py-2 border-b border-gray-200 last:border-0">
-                      <span className="text-gray-700 text-sm">
-                        {item.link ? (
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-gold transition-colors"
-                          >
-                            {item.name}
-                            <span className="text-gold ml-0.5 text-xs">↗</span>
-                          </a>
-                        ) : item.name}
-                      </span>
-                      <span className="text-ocean text-xs font-semibold bg-ocean/10 px-3 py-1 rounded-full ml-4 whitespace-nowrap">
-                        {item.time}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {LOCAL_GUIDE_META.map((cat, ci) => {
+              const catT = t.categories[ci]
+              return (
+                <div key={ci}>
+                  <h3 className="font-serif text-lg text-ocean font-semibold mb-3 flex items-center gap-2">
+                    <span>{cat.icon}</span>
+                    <span>{catT.label}</span>
+                  </h3>
+                  <ul className="space-y-1">
+                    {cat.items.map((item, ii) => (
+                      <li key={ii} className="flex justify-between items-center py-2 border-b border-gray-200 last:border-0">
+                        <span className="text-gray-700 text-sm">
+                          {item.link ? (
+                            <a
+                              href={item.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="hover:text-gold transition-colors"
+                            >
+                              {catT.items[ii]}
+                              <span className="text-gold ml-0.5 text-xs">↗</span>
+                            </a>
+                          ) : catT.items[ii]}
+                        </span>
+                        <span className="text-ocean text-xs font-semibold bg-ocean/10 px-3 py-1 rounded-full ml-4 whitespace-nowrap">
+                          {item.time}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            })}
           </div>
 
-          {/* Map */}
           <div className="rounded-2xl overflow-hidden shadow-xl lg:sticky lg:top-24">
             <iframe
               title="Mazatlán Area Map"
@@ -870,42 +760,16 @@ function LocalAreaGuide() {
 // ─── Digital House Guide ──────────────────────────────────────────────────────
 
 function DigitalHouseGuide() {
-  const cards = [
-    {
-      icon: '🔑',
-      title: 'Check-in Details',
-      desc: 'Step by step arrival instructions and door codes sent 48 hours before your stay',
-    },
-    {
-      icon: '📶',
-      title: 'WiFi & Tech',
-      desc: 'Network names, passwords, and smart TV setup guides for every room',
-    },
-    {
-      icon: '🏠',
-      title: 'House Manual',
-      desc: 'Appliance guides, house rules, emergency contacts, and local tips',
-    },
-    {
-      icon: '🗺️',
-      title: 'Insider Recommendations',
-      desc: "Rodrigo's personal guide to the best restaurants, beaches, and hidden gems in Mazatlán",
-    },
-  ]
-
+  const t = useT().houseGuide
   return (
     <section id="house-guide" className="py-20 bg-ocean">
       <div className="max-w-5xl mx-auto px-4 text-center">
-        <SectionLabel>For Guests</SectionLabel>
-        <h2 className="font-serif text-4xl text-white mb-4">
-          Everything You Need to Know — Before You Arrive
-        </h2>
-        <p className="text-white/70 text-lg max-w-2xl mx-auto mb-12">
-          Guests receive our complete digital welcome guide upon booking
-        </p>
+        <SectionLabel>{t.label}</SectionLabel>
+        <h2 className="font-serif text-4xl text-white mb-4">{t.heading}</h2>
+        <p className="text-white/70 text-lg max-w-2xl mx-auto mb-12">{t.subtitle}</p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {cards.map((c, i) => (
+          {t.cards.map((c, i) => (
             <div
               key={i}
               className="bg-white/10 border border-white/20 rounded-2xl p-6 text-left hover:bg-white/15 transition-colors"
@@ -917,9 +781,7 @@ function DigitalHouseGuide() {
           ))}
         </div>
 
-        <p className="text-white/40 text-sm mt-10">
-          Full guide delivered via email upon confirmed booking
-        </p>
+        <p className="text-white/40 text-sm mt-10">{t.footer}</p>
       </div>
     </section>
   )
@@ -928,18 +790,19 @@ function DigitalHouseGuide() {
 // ─── FAQ ──────────────────────────────────────────────────────────────────────
 
 function FAQ() {
+  const t = useT().faq
   const [openIdx, setOpenIdx] = useState(null)
 
   return (
     <section id="faq" className="py-20 bg-warm-white">
       <div className="max-w-3xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>Questions</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">Frequently Asked Questions</h2>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
         </div>
 
         <div className="space-y-3">
-          {FAQS.map((faq, i) => (
+          {t.items.map((faq, i) => (
             <div key={i} className={`border rounded-xl overflow-hidden transition-colors ${openIdx === i ? 'border-ocean/30 bg-white' : 'border-gray-200 bg-white hover:border-gray-300'}`}>
               <button
                 className="w-full text-left px-6 py-4 flex items-center justify-between gap-4"
@@ -967,12 +830,12 @@ function FAQ() {
         </div>
 
         <div className="mt-10 text-center">
-          <p className="text-gray-500 text-sm mb-4">Still have a question?</p>
+          <p className="text-gray-500 text-sm mb-4">{t.stillQuestion}</p>
           <button
             onClick={() => scrollTo('contact')}
             className="bg-ocean text-white px-8 py-3 rounded-lg font-semibold hover:bg-ocean/80 transition-colors text-sm"
           >
-            Ask Rodrigo Directly
+            {t.cta}
           </button>
         </div>
       </div>
@@ -983,6 +846,7 @@ function FAQ() {
 // ─── Inquiry Form ─────────────────────────────────────────────────────────────
 
 function InquiryForm() {
+  const t = useT().inquiry
   const [form, setForm] = useState({
     firstName: '', lastName: '', email: '', phone: '',
     checkIn: '', checkOut: '', guests: '', source: '', message: '',
@@ -998,16 +862,16 @@ function InquiryForm() {
 
   const validate = () => {
     const errs = {}
-    if (!form.firstName.trim()) errs.firstName = 'First name is required.'
-    if (!form.lastName.trim())  errs.lastName  = 'Last name is required.'
+    if (!form.firstName.trim()) errs.firstName = t.errors.firstName
+    if (!form.lastName.trim())  errs.lastName  = t.errors.lastName
     if (!form.email.trim()) {
-      errs.email = 'Email is required.'
+      errs.email = t.errors.emailRequired
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      errs.email = 'Please enter a valid email address.'
+      errs.email = t.errors.emailInvalid
     }
-    if (!form.checkIn)  errs.checkIn  = 'Check-in date is required.'
-    if (!form.checkOut) errs.checkOut = 'Check-out date is required.'
-    if (!form.guests)   errs.guests   = 'Please select number of guests.'
+    if (!form.checkIn)  errs.checkIn  = t.errors.checkIn
+    if (!form.checkOut) errs.checkOut = t.errors.checkOut
+    if (!form.guests)   errs.guests   = t.errors.guests
     return errs
   }
 
@@ -1027,8 +891,8 @@ function InquiryForm() {
     <section id="contact" className="py-20 bg-[#f0ede6]">
       <div className="max-w-3xl mx-auto px-4">
         <div className="text-center mb-2">
-          <SectionLabel>Contact</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">Plan Your Stay at Casa Pacífico</h2>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12 mt-10">
@@ -1037,73 +901,73 @@ function InquiryForm() {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-green-600 text-3xl font-bold">✓</span>
               </div>
-              <h3 className="font-serif text-2xl text-ocean font-semibold mb-2">Thank you!</h3>
-              <p className="text-gray-600">Rodrigo will be in touch within a few hours.</p>
+              <h3 className="font-serif text-2xl text-ocean font-semibold mb-2">{t.successTitle}</h3>
+              <p className="text-gray-600">{t.successDesc}</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className={labelClass} htmlFor="firstName">First Name</label>
-                  <input id="firstName" name="firstName" type="text" value={form.firstName} onChange={handleChange} className={inputClass('firstName')} placeholder="Maria" />
+                  <label className={labelClass} htmlFor="firstName">{t.firstName}</label>
+                  <input id="firstName" name="firstName" type="text" value={form.firstName} onChange={handleChange} className={inputClass('firstName')} placeholder={t.firstNamePlaceholder} />
                   {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
                 </div>
 
                 <div>
-                  <label className={labelClass} htmlFor="lastName">Last Name</label>
-                  <input id="lastName" name="lastName" type="text" value={form.lastName} onChange={handleChange} className={inputClass('lastName')} placeholder="García" />
+                  <label className={labelClass} htmlFor="lastName">{t.lastName}</label>
+                  <input id="lastName" name="lastName" type="text" value={form.lastName} onChange={handleChange} className={inputClass('lastName')} placeholder={t.lastNamePlaceholder} />
                   {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className={labelClass} htmlFor="email">Email Address</label>
-                  <input id="email" name="email" type="email" value={form.email} onChange={handleChange} className={inputClass('email')} placeholder="maria@example.com" />
+                  <label className={labelClass} htmlFor="email">{t.email}</label>
+                  <input id="email" name="email" type="email" value={form.email} onChange={handleChange} className={inputClass('email')} placeholder={t.emailPlaceholder} />
                   {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className={labelClass} htmlFor="phone">Phone Number</label>
-                  <input id="phone" name="phone" type="tel" value={form.phone} onChange={handleChange} className={inputClass('phone')} placeholder="+1 (555) 000-0000" />
+                  <label className={labelClass} htmlFor="phone">{t.phone}</label>
+                  <input id="phone" name="phone" type="tel" value={form.phone} onChange={handleChange} className={inputClass('phone')} placeholder={t.phonePlaceholder} />
                 </div>
 
                 <div>
-                  <label className={labelClass} htmlFor="checkIn">Check-in Date</label>
+                  <label className={labelClass} htmlFor="checkIn">{t.checkIn}</label>
                   <input id="checkIn" name="checkIn" type="date" value={form.checkIn} onChange={handleChange} className={inputClass('checkIn')} />
                   {errors.checkIn && <p className="text-red-500 text-xs mt-1">{errors.checkIn}</p>}
                 </div>
 
                 <div>
-                  <label className={labelClass} htmlFor="checkOut">Check-out Date</label>
+                  <label className={labelClass} htmlFor="checkOut">{t.checkOut}</label>
                   <input id="checkOut" name="checkOut" type="date" value={form.checkOut} onChange={handleChange} className={inputClass('checkOut')} />
                   {errors.checkOut && <p className="text-red-500 text-xs mt-1">{errors.checkOut}</p>}
                 </div>
 
                 <div>
-                  <label className={labelClass} htmlFor="guests">Number of Guests</label>
+                  <label className={labelClass} htmlFor="guests">{t.guests}</label>
                   <select id="guests" name="guests" value={form.guests} onChange={handleChange} className={inputClass('guests')}>
-                    <option value="">Select guests</option>
+                    <option value="">{t.selectGuests}</option>
                     {Array.from({ length: 14 }, (_, i) => i + 1).map(n => (
-                      <option key={n} value={n}>{n} {n === 1 ? 'guest' : 'guests'}</option>
+                      <option key={n} value={n}>{n} {n === 1 ? t.guestSingular : t.guestPlural}</option>
                     ))}
                   </select>
                   {errors.guests && <p className="text-red-500 text-xs mt-1">{errors.guests}</p>}
                 </div>
 
                 <div>
-                  <label className={labelClass} htmlFor="source">How did you hear about us?</label>
+                  <label className={labelClass} htmlFor="source">{t.source}</label>
                   <select id="source" name="source" value={form.source} onChange={handleChange} className={inputClass('source')}>
-                    <option value="">Select an option</option>
-                    <option value="google">Google</option>
-                    <option value="airbnb">Airbnb</option>
-                    <option value="vrbo">VRBO</option>
-                    <option value="referral">Referred by a friend</option>
-                    <option value="social">Social media</option>
-                    <option value="other">Other</option>
+                    <option value="">{t.selectSource}</option>
+                    <option value="google">{t.sourceOptions.google}</option>
+                    <option value="airbnb">{t.sourceOptions.airbnb}</option>
+                    <option value="vrbo">{t.sourceOptions.vrbo}</option>
+                    <option value="referral">{t.sourceOptions.referral}</option>
+                    <option value="social">{t.sourceOptions.social}</option>
+                    <option value="other">{t.sourceOptions.other}</option>
                   </select>
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className={labelClass} htmlFor="message">Message / Special Requests</label>
+                  <label className={labelClass} htmlFor="message">{t.message}</label>
                   <textarea
                     id="message"
                     name="message"
@@ -1111,7 +975,7 @@ function InquiryForm() {
                     value={form.message}
                     onChange={handleChange}
                     className={inputClass('message')}
-                    placeholder="Tell us about your group, any special requests, or questions you have..."
+                    placeholder={t.messagePlaceholder}
                   />
                 </div>
               </div>
@@ -1120,7 +984,7 @@ function InquiryForm() {
                 type="submit"
                 className="mt-8 w-full bg-gold hover:bg-[#c49a3c] text-white font-semibold py-4 rounded-lg text-lg transition-colors"
               >
-                Send Inquiry
+                {t.submit}
               </button>
             </form>
           )}
@@ -1133,6 +997,7 @@ function InquiryForm() {
 // ─── Newsletter ───────────────────────────────────────────────────────────────
 
 function Newsletter() {
+  const t = useT().newsletter
   const [email, setEmail] = useState('')
   const [sent, setSent] = useState(false)
   const [error, setError] = useState('')
@@ -1140,7 +1005,7 @@ function Newsletter() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setError('Please enter a valid email address.')
+      setError(t.emailError)
       return
     }
     setSent(true)
@@ -1150,18 +1015,14 @@ function Newsletter() {
     <section className="py-20 bg-[#f5e6c4]">
       <div className="max-w-2xl mx-auto px-4 text-center">
         <div className="text-4xl mb-4">🌴</div>
-        <h2 className="font-serif text-3xl md:text-4xl text-ocean mb-4">
-          Get Our Free Mazatlán Insider Guide
-        </h2>
-        <p className="text-gray-700 leading-relaxed mb-8">
-          Subscribe and we'll send you Rodrigo's personal guide to the best restaurants, beaches, sunset spots, and hidden gems in Mazatlán — plus exclusive direct booking rates.
-        </p>
+        <h2 className="font-serif text-3xl md:text-4xl text-ocean mb-4">{t.heading}</h2>
+        <p className="text-gray-700 leading-relaxed mb-8">{t.desc}</p>
 
         {sent ? (
           <div className="bg-white rounded-2xl p-8 shadow-md inline-block">
             <div className="text-3xl mb-3">✉️</div>
-            <p className="font-serif text-xl text-ocean font-semibold">Check your inbox!</p>
-            <p className="text-gray-600 mt-1 text-sm">Your Mazatlán guide is on its way.</p>
+            <p className="font-serif text-xl text-ocean font-semibold">{t.successTitle}</p>
+            <p className="text-gray-600 mt-1 text-sm">{t.successDesc}</p>
           </div>
         ) : (
           <>
@@ -1170,23 +1031,21 @@ function Newsletter() {
                 type="email"
                 value={email}
                 onChange={e => { setEmail(e.target.value); setError('') }}
-                placeholder="Your email address"
+                placeholder={t.placeholder}
                 className="flex-1 border border-gray-200 bg-white rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-ocean/30 focus:border-ocean text-gray-700 text-sm"
               />
               <button
                 type="submit"
                 className="bg-gold hover:bg-[#c49a3c] text-white font-semibold px-6 py-3 rounded-lg transition-colors whitespace-nowrap"
               >
-                Send My Guide
+                {t.submit}
               </button>
             </form>
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           </>
         )}
 
-        <p className="text-gray-500 text-xs mt-4">
-          No spam. Unsubscribe anytime. Direct booking deals for subscribers only.
-        </p>
+        <p className="text-gray-500 text-xs mt-4">{t.note}</p>
       </div>
     </section>
   )
@@ -1197,21 +1056,20 @@ function Newsletter() {
 // ─── Events Teaser ────────────────────────────────────────────────────────────
 
 function EventsTeaser() {
+  const t = useT().eventsTeaser
   return (
     <section className="bg-ocean py-14 px-4">
       <div className="max-w-3xl mx-auto text-center">
         <div className="text-4xl mb-4">🎉</div>
         <h2 className="font-serif text-2xl md:text-3xl text-white font-semibold mb-3">
-          What's happening in Mazatlán?
+          {t.heading}
         </h2>
-        <p className="text-white/70 mb-8 max-w-xl mx-auto">
-          Browse our events calendar — plan your trip around Mazatlán's best festivals, markets, and cultural celebrations.
-        </p>
+        <p className="text-white/70 mb-8 max-w-xl mx-auto">{t.desc}</p>
         <Link
           to="/events"
           className="inline-block bg-gold text-white px-8 py-3 rounded-lg font-semibold hover:bg-[#c49a3c] transition-colors"
         >
-          View Events Calendar
+          {t.cta}
         </Link>
       </div>
     </section>
@@ -1229,17 +1087,16 @@ const CATEGORY_COLORS = {
 }
 
 function BlogPreview() {
+  const t = useT().blogPreview
   const featured = posts.slice(0, 3)
 
   return (
     <section className="py-20 bg-warm-white">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionLabel>Mazatlán Travel Guide</SectionLabel>
-          <h2 className="font-serif text-4xl text-ocean">Your Mazatlán Travel Guide</h2>
-          <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-            Tips, guides, and local knowledge from your hosts at Casa Pacífico
-          </p>
+          <SectionLabel>{t.label}</SectionLabel>
+          <h2 className="font-serif text-4xl text-ocean">{t.heading}</h2>
+          <p className="text-gray-500 mt-3 max-w-xl mx-auto">{t.subtitle}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
@@ -1253,7 +1110,7 @@ function BlogPreview() {
                   <span className={`text-xs font-semibold px-3 py-1 rounded-full ${CATEGORY_COLORS[post.category] || 'bg-gray-100 text-gray-600'}`}>
                     {post.category}
                   </span>
-                  <span className="text-gray-400 text-xs">{post.readTime} read</span>
+                  <span className="text-gray-400 text-xs">{post.readTime} {t.readTime}</span>
                 </div>
                 <h3 className="font-serif text-xl text-ocean font-semibold leading-snug mb-3">
                   {post.title}
@@ -1265,7 +1122,7 @@ function BlogPreview() {
                   to={`/blog/${post.slug}`}
                   className="mt-auto text-ocean font-semibold text-sm hover:text-gold transition-colors flex items-center gap-1"
                 >
-                  Read Article
+                  {t.readArticle}
                   <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
                   </svg>
@@ -1280,7 +1137,7 @@ function BlogPreview() {
             to="/blog"
             className="inline-block border-2 border-ocean text-ocean px-8 py-3 rounded-lg font-semibold hover:bg-ocean hover:text-white transition-colors"
           >
-            View All Articles
+            {t.viewAll}
           </Link>
         </div>
       </div>
@@ -1291,19 +1148,18 @@ function BlogPreview() {
 // ─── Floating: WhatsApp ───────────────────────────────────────────────────────
 
 function WhatsAppButton() {
+  const t = useT().whatsapp
   return (
     <div className="fixed bottom-24 md:bottom-6 right-6 z-40 group">
       <a
         href="https://wa.me/message"
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Chat with Rodrigo on WhatsApp"
+        aria-label={t.ariaLabel}
       >
-        {/* Tooltip */}
         <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 bg-ocean text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none shadow-lg">
-          Chat with Rodrigo on WhatsApp
+          {t.tooltip}
         </span>
-        {/* Button */}
         <div className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-xl animate-pulse-wa">
           <svg
             viewBox="0 0 24 24"
@@ -1345,17 +1201,18 @@ function ScrollToTopBtn() {
 // ─── Floating: Mobile Book Now Bar ────────────────────────────────────────────
 
 function MobileBookBar() {
+  const t = useT().mobileBar
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white border-t border-gray-100 px-4 py-3 flex items-center justify-between shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
       <div>
-        <div className="text-xs text-gray-400">Starting from</div>
+        <div className="text-xs text-gray-400">{t.startingFrom}</div>
         <div className="font-serif text-ocean font-semibold text-lg">$XXX <span className="text-sm font-normal text-gray-500">/ night</span></div>
       </div>
       <button
         onClick={() => scrollTo('contact')}
         className="bg-gold hover:bg-[#c49a3c] text-white px-7 py-2.5 rounded-xl font-semibold text-sm transition-colors"
       >
-        Book Now
+        {t.bookNow}
       </button>
     </div>
   )

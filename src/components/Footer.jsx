@@ -1,4 +1,14 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useT } from '../context/LanguageContext.jsx'
+
+const PROPERTY_SECTION_IDS = ['about', 'gallery', 'amenities', 'reviews', 'faq', 'contact']
+const EXPLORE_SLUGS = [
+  '/events',
+  '/blog',
+  '/blog/best-time-to-visit-mazatlan',
+  '/blog/top-restaurants-near-malecon-mazatlan',
+  '/blog/mazatlan-with-kids-family-travel-guide',
+]
 
 function scrollTo(id) {
   const el = document.getElementById(id)
@@ -8,6 +18,7 @@ function scrollTo(id) {
 export default function Footer() {
   const { pathname } = useLocation()
   const isHome = pathname === '/'
+  const t = useT().footer
 
   function FooterSectionLink({ id, label }) {
     if (isHome) {
@@ -30,61 +41,36 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center md:text-left">
           <div>
             <div className="font-serif text-xl text-gold">Casa Pacífico</div>
-            <div className="text-white/60 text-sm mt-1">Mazatlán, Sinaloa, Mexico</div>
-            <div className="text-white/40 text-xs mt-2">Where the Pacific Meets Home</div>
+            <div className="text-white/60 text-sm mt-1">{t.location}</div>
+            <div className="text-white/40 text-xs mt-2">{t.tagline}</div>
           </div>
 
           <div>
-            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">The Property</div>
+            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">{t.theProperty}</div>
             <ul className="space-y-2">
-              {[
-                { label: 'About',     id: 'about' },
-                { label: 'Gallery',   id: 'gallery' },
-                { label: 'Amenities', id: 'amenities' },
-                { label: 'Reviews',   id: 'reviews' },
-                { label: 'FAQ',       id: 'faq' },
-                { label: 'Contact',   id: 'contact' },
-              ].map(l => (
-                <li key={l.id}>
-                  <FooterSectionLink id={l.id} label={l.label} />
+              {PROPERTY_SECTION_IDS.map((id, i) => (
+                <li key={id}>
+                  <FooterSectionLink id={id} label={t.propertyLinks[i]} />
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">Explore</div>
+            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">{t.explore}</div>
             <ul className="space-y-2">
-              <li>
-                <Link to="/events" className="text-white/70 hover:text-gold text-sm transition-colors">
-                  Events &amp; Festivals
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog" className="text-white/70 hover:text-gold text-sm transition-colors">
-                  Mazatlán Travel Blog
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog/best-time-to-visit-mazatlan" className="text-white/70 hover:text-gold text-sm transition-colors">
-                  Best Time to Visit
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog/top-restaurants-near-malecon-mazatlan" className="text-white/70 hover:text-gold text-sm transition-colors">
-                  Best Restaurants
-                </Link>
-              </li>
-              <li>
-                <Link to="/blog/mazatlan-with-kids-family-travel-guide" className="text-white/70 hover:text-gold text-sm transition-colors">
-                  Family Travel Guide
-                </Link>
-              </li>
+              {EXPLORE_SLUGS.map((slug, i) => (
+                <li key={slug}>
+                  <Link to={slug} className="text-white/70 hover:text-gold text-sm transition-colors">
+                    {t.exploreLinks[i]}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">Also Find Us On</div>
+            <div className="text-white/50 text-xs uppercase tracking-widest mb-3">{t.alsoFindUs}</div>
             <ul className="space-y-2">
               <li>
                 <a
@@ -111,7 +97,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-white/10 mt-8 pt-8 text-center text-white/40 text-xs">
-          © 2025 Casa Pacífico Mazatlán. All rights reserved. | Site by{' '}
+          {t.copyright} | {t.siteBy}{' '}
           <a href="#" className="text-white/60 hover:text-gold transition-colors">Local Boost AI</a>
         </div>
       </div>
